@@ -16,5 +16,10 @@
   "bugs": {
     "url": "https://github.com/URmyArtemis/CS554-Finale-Project/issues"
   },
-  "homepage": "https://github.com/URmyArtemis/CS554-Finale-Project#readme"
+  "homepage": "https://github.com/URmyArtemis/CS554-Finale-Project#readme",
+  "dependencies": {
+    "apollo-server": "^2.19.0",
+    "redis": "^3.0.2",
+    "yelp-fusion": "^3.0.0"
+  }
 }
