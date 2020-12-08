@@ -71,7 +71,7 @@ const resolvers = {
                         location: Post.location.address1 + ' ,' + Post.location.city + ' ,' + Post.location.state,
                         phone: Post.phone,
                     }));
-                    console.log(yelpPosts);
+                    // console.log(yelpPosts);
                     // return yelpPosts
                     // const prettyJson = JSON.stringify(firstResult, null, 4);
                     // console.log(prettyJson);
