@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js"
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
@@ -19,6 +19,7 @@
   "homepage": "https://github.com/URmyArtemis/CS554-Finale-Project#readme",
   "dependencies": {
     "apollo-server": "^2.19.0",
+    "bluebird": "^3.7.2",
     "redis": "^3.0.2",
     "yelp-fusion": "^3.0.0"
   }
