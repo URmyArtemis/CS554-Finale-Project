@@ -13,6 +13,7 @@ bluebird.promisifyAll(redis.Multi.prototype);
 const typeDefs = gql`
     type Query {
         yelpBusinesses(term: String, location: String!): [Business]
+        businessReviews(alias: String!): [Review]
         binnedBusinesses(uid: ID!): [Business]
         postedReviews(uid: ID!): [Review]
     }
@@ -26,7 +27,6 @@ const typeDefs = gql`
         location: [String]
         display_phone: String
         price: String
-        reviews: [Review]
     }
 
     type Review {
@@ -66,12 +66,38 @@ const resolvers = {
                             display_phone: data.display_phone,
                             price: data.price
                         }
-                        await redisClient.setAsync(data.id, JSON.stringify(businesses));
+                        await redisClient.setAsync(data.id, JSON.stringify(business));
                         return business;
                     }
                 });
             } catch (e) {
                 console.log(e);
+            }
+        },
+        businessReviews: async (_, args) => {
+            if (await redisClient.scardAsync(args.alias)) {
+                const reviews = await redisClient.smembersAsync(args.alias);
+                return reviews.map((review) => {
+                    return JSON.parse(review);
+                });
+            } else {
+                try {
+                    const response = await yelpClient.reviews(args.alias);
+                    const { reviews } = response.jsonBody;
+                    return reviews.map(async (data) => {
+                        const review = {
+                            id: data.id,
+                            text: data.text,
+                            rating: data.rating,
+                            time_created: data.time_created,
+                            username: data.user.name
+                        }
+                        await redisClient.saddAsync(args.alias, JSON.stringify(review));
+                        return review;
+                    });
+                } catch (e) {
+                    console.log(e);
+                }
             }
         },
         binnedBusinesses: async (_, args) => {
@@ -85,34 +111,6 @@ const resolvers = {
             return reviews.map((review) => {
                 return JSON.parse(review);
             });
-        }
-    },
-    Business: {
-        reviews: async (parentValue) => {
-            if (await redisClient.scardAsync(parentValue.alias)) {
-                const reviews = await redisClient.smembersAsync(parentValue.alias);
-                return reviews.map((review) => {
-                    return JSON.parse(review);
-                })
-            } else {
-                try {
-                    const response = await yelpClient.reviews(parentValue.alias);
-                    const { reviews } = response.jsonBody;
-                    return reviews.map(async (data) => {
-                        const review = {
-                            id: data.id,
-                            text: data.text,
-                            rating: data.rating,
-                            time_created: data.time_created,
-                            username: data.user.name
-                        }
-                        await redisClient.saddAsync(parentValue.alias, JSON.stringify(review));
-                        return review;
-                    });
-                } catch (e) {
-                    console.log(e);
-                }
-            }
         }
     },
     Mutation: {
