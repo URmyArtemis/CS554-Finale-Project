@@ -21,6 +21,7 @@
     "apollo-server": "^2.19.0",
     "bluebird": "^3.7.2",
     "redis": "^3.0.2",
+    "uuid": "^8.3.2",
     "yelp-fusion": "^3.0.0"
   }
 }
