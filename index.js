@@ -6,6 +6,9 @@ const uuid = require('uuid');
 const yelp = require('yelp-fusion');
 const apiKey = 't0fVoVqzvxnLr24kh-D9tyOgSChqAblbdiYT79jivXb-RON1SR8CgOjp7wHeJHy_bv8OucEwe7cHe66AO7EyK1soEsnbEQJzrCBzCg8EO2DO8-hZglzKJnZP3CGaX3Yx';
 const yelpClient = yelp.client(apiKey);
+const gm = require('gm').subClass({ imageMagick: true });
+const fs = require('file-system');
+const request = require('request');
 
 bluebird.promisifyAll(redis.RedisClient.prototype);
 bluebird.promisifyAll(redis.Multi.prototype);
@@ -66,6 +69,9 @@ const resolvers = {
                             display_phone: data.display_phone,
                             price: data.price
                         }
+                        gm(request(data.image_url)).options({
+                            imageMagick: true
+                        }).resize(1300, 1050).stream().pipe(fs.createWriteStream(`./client/src/img/${data.alias}.jpg`));
                         await redisClient.setAsync(data.id, JSON.stringify(business));
                         return business;
                     }
