@@ -8,7 +8,7 @@ const s = async () => {
         // console.log(response.body.businesses);
         // console.log(typeof response.jsonBody);
         const { businesses } = response.jsonBody;
-        console.log(businesses[0]);
+        console.log(response);
     } catch (e) {
         console.log(e);
     }
@@ -23,7 +23,7 @@ const c = async () => {
     }
 }
 
-c();
+s();
 
 // const myDate = new Date();
 // console.log(myDate.toLocaleDateString());

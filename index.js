@@ -109,7 +109,8 @@ const resolvers = {
         binnedBusinesses: async (_, args) => {
             const businessIDs = await redisClient.smembersAsync(`${args.uid}binned`);
             return businessIDs.map(async (businessID) => {
-                return await redisClient.getAsync(businessID);
+                const stringBusiness = await redisClient.getAsync(businessID);
+                return JSON.parse(stringBusiness);
             });
         },
         postedReviews: async (_, args) => {
@@ -127,7 +128,7 @@ const resolvers = {
                 text: args.text,
                 rating: args.rating,
                 time_created: myDate.toLocaleString(),
-                username: args.uid
+                username: args.username
             }
             await redisClient.saddAsync(args.businessAlias, JSON.stringify(newReview));
             await redisClient.saddAsync(`${args.uid}posted`, JSON.stringify(newReview));
