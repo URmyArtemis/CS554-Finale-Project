@@ -11,14 +11,14 @@ const SearchBusinesses = (props) => {
             props.searchLocation(location.value);
         }}
         >
-            <div className="form-group">
+            <div className="form-group" align="center">
                 <label>
                     term:
                     <br />
                     <input ref={(node) => term = node} autoFocus />
                 </label>
             </div>
-            <div className="form-group">
+            <div className="form-group" align="center">
                 <label>
                     location:
                     <br />
@@ -28,7 +28,7 @@ const SearchBusinesses = (props) => {
             </div>
             <br />
             <br />
-            <button className="button" type="submit">Search</button>
+            <button className="button" type="submit"  >Search</button>
         </form>
     )
 };

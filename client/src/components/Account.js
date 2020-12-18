@@ -9,7 +9,7 @@ function Account() {
   return (
     <div>
       <h2>Account Page</h2>
-      <h2>{currentUser.displayName}</h2>
+      <h2>{currentUser.email}</h2>
       <ChangePassword />
       <SignOutButton />
     </div>

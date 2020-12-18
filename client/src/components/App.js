@@ -30,11 +30,12 @@ function App() {
           </div>
           <Route exact path="/" component={Landing} />
           <PrivateRoute path="/home" component={Home} />
+          <PrivateRoute exact path="/businesses" component={BusinessList} />
           <PrivateRoute path="/account" component={Account} />
           <Route path="/signin" component={SignIn} />
           <Route path="/signup" component={SignUp} />
-          <Route exact path="/businesses" component={BusinessList} />
-          <Route exact path="/businesses/:id" component={Business} />
+          {/* <PrivateRoute exact path="/businesses" component={BusinessList} /> */}
+          <PrivateRoute exact path="/businesses/:id" component={Business} />
         </Router>
       </AuthProvider>
     </ApolloProvider>
