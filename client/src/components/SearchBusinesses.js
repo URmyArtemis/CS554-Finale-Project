@@ -28,7 +28,9 @@ const SearchBusinesses = (props) => {
             </div>
             <br />
             <br />
-            <button className="button" type="submit"  >Search</button>
+            <div align="center" >
+                <button className="button" type="submit"  >Search</button>
+            </div>
         </form>
     )
 };
