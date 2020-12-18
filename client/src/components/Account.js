@@ -1,7 +1,8 @@
 import React, { useContext } from 'react';
 import SignOutButton from './SignOut';
 import '../App.css';
-import ChangePassword from './ChangePassword';
+import { Link } from 'react-router-dom';
+// import ChangePassword from './ChangePassword';
 import { AuthContext } from '../firebase/Auth';
 
 function Account() {
@@ -10,8 +11,13 @@ function Account() {
     <div>
       <h2>Account Page</h2>
       <h2>{currentUser.email}</h2>
-      <ChangePassword />
-      <SignOutButton />
+      {/* <ChangePassword /> */}
+      <Link to="/changepassword">
+        Change Password
+      </Link>
+      {/* <SignOutButton /> */}
+      <h2>Favorites </h2>
+      <h2>My reviews </h2>
     </div>
   );
 }

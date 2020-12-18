@@ -5,6 +5,7 @@ import { ApolloClient, HttpLink, InMemoryCache, ApolloProvider } from '@apollo/c
 import { AuthProvider } from '../firebase/Auth';
 import PrivateRoute from './PrivateRoute';
 import Account from './Account';
+import ChangePassword from './ChangePassword';
 import Home from './Home';
 import Landing from './Landing';
 import Navigation from './Navigation';
@@ -32,6 +33,7 @@ function App() {
           <PrivateRoute path="/home" component={Home} />
           <PrivateRoute exact path="/businesses" component={BusinessList} />
           <PrivateRoute path="/account" component={Account} />
+          <PrivateRoute path="/changepassword" component={ChangePassword} />
           <Route path="/signin" component={SignIn} />
           <Route path="/signup" component={SignUp} />
           {/* <PrivateRoute exact path="/businesses" component={BusinessList} /> */}
