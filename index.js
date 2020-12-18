@@ -69,9 +69,9 @@ const resolvers = {
                             display_phone: data.display_phone,
                             price: data.price
                         }
-                        gm(request(data.image_url)).options({
-                            imageMagick: true
-                        }).resize(1300, 1050).stream().pipe(fs.createWriteStream(`./client/src/img/${data.alias}.jpg`));
+                        // gm(request(data.image_url)).options({
+                        //     imageMagick: true
+                        // }).resize(1300, 1050).stream().pipe(fs.createWriteStream(`./client/public/imgs/${data.alias}.jpg`));
                         await redisClient.setAsync(data.id, JSON.stringify(business));
                         return business;
                     }

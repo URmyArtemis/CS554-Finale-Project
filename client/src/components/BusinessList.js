@@ -64,8 +64,8 @@ const BusinessList = (props) => {
                             <CardMedia
                                 className={classes.media}
                                 component='img'
-                                // image='../img/${business.alias}.jpg'
-                                image={business.image_url}
+                                image={`/imgs/${business.alias}.jpg`}
+                                // image={business.image_url}
                                 title='business image'
                             />
 
