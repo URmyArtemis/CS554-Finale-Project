@@ -10,6 +10,7 @@ import Landing from './Landing';
 import Navigation from './Navigation';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
+import BusinessList from './BusinessList';
 
 const client = new ApolloClient({
   cache: new InMemoryCache(),
@@ -31,6 +32,7 @@ function App() {
           <PrivateRoute path="/account" component={Account} />
           <Route path="/signin" component={SignIn} />
           <Route path="/signup" component={SignUp} />
+          <Route exact path="/businesses" component={BusinessList} />
         </Router>
       </AuthProvider>
     </ApolloProvider>
