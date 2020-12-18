@@ -60,12 +60,12 @@ const BusinessList = (props) => {
             <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={business.id}>
                 <Card className={classes.card} variant='outlined'>
                     <CardActionArea>
-                        <Link to={`/businesses/${business.id}`}>
+                        <Link to={`/businesses/${business.alias}`}>
                             <CardMedia
                                 className={classes.media}
                                 component='img'
-                                image={`/img/${business.alias}.jpg`}
-                                // image={business.image_url}
+                                // image={`/img/${business.alias}.jpg`}
+                                image={business.image_url}
                                 title='business image'
                             />
 

@@ -11,6 +11,7 @@ import Navigation from './Navigation';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
 import BusinessList from './BusinessList';
+import Business from './Business';
 
 const client = new ApolloClient({
   cache: new InMemoryCache(),
@@ -33,6 +34,7 @@ function App() {
           <Route path="/signin" component={SignIn} />
           <Route path="/signup" component={SignUp} />
           <Route exact path="/businesses" component={BusinessList} />
+          <Route exact path="/businesses/:id" component={Business} />
         </Router>
       </AuthProvider>
     </ApolloProvider>
