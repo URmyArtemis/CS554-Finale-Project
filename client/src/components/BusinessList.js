@@ -60,7 +60,7 @@ const BusinessList = (props) => {
             <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={business.id}>
                 <Card className={classes.card} variant='outlined'>
                     <CardActionArea>
-                        <Link to={`/businesses/${business.alias}`}>
+                        <Link to={`/businesses/${business.id}`}>
                             <CardMedia
                                 className={classes.media}
                                 component='img'
@@ -73,9 +73,9 @@ const BusinessList = (props) => {
                                     {business.name}
                                 </Typography>
                                 <Typography variant='body2' color='textSecondary' component='p'>
-                                    rating: {business.rating}
+                                    rating: {business.rating ? business.rating : 'N/A'}
                                     <br />
-                                    price: {business.price}
+                                    price: {business.pric ? business.price : 'N/A'}
                                     <br />
                                     {business.location[0]}, {business.location[1]}
                                 </Typography>
@@ -108,7 +108,6 @@ const BusinessList = (props) => {
             </Grid>
         </div>
     )
-
 };
 
 export default BusinessList;

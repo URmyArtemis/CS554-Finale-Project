@@ -16,6 +16,7 @@ bluebird.promisifyAll(redis.Multi.prototype);
 const typeDefs = gql`
     type Query {
         yelpBusinesses(term: String, location: String!): [Business]
+        singleBusiness(id: ID!): Business
         businessReviews(alias: String!): [Review]
         binnedBusinesses(uid: ID!): [Business]
         postedReviews(uid: ID!): [Review]
@@ -79,6 +80,10 @@ const resolvers = {
             } catch (e) {
                 console.log(e);
             }
+        },
+        singleBusiness: async (_, args) => {
+            const stringBusiness = await redisClient.getAsync(args.id);
+            return JSON.parse(stringBusiness);
         },
         businessReviews: async (_, args) => {
             if (await redisClient.scardAsync(args.alias)) {

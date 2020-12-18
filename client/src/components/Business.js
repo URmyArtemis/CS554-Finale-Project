@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { useQuery } from '@apollo/client';
 import queries from '../queries';
-import { Card, CardActionArea, CardContent, CardMedia, Grid, Typography, makeStyles } from '@material-ui/core';
+import Reviews from './Reviews';
+import { makeStyles, Card, CardContent, CardMedia, Typography, CardHeader } from '@material-ui/core';
 import '../App.css';
+
 const useStyles = makeStyles({
     card: {
         maxWidth: 550,
@@ -32,40 +34,13 @@ const useStyles = makeStyles({
     }
 });
 
-
-
 const Business = (props) => {
     const classes = useStyles();
-    // const info = 根据ID查business
-    const { data, loading, error } = useQuery(queries.GET_BUSINESSREVIEWS, {
+    const { data, loading, error } = useQuery(queries.GET_SINGLEBUSINESS, {
         variables: {
-            alias: props.match.params.id
+            id: props.match.params.id
         }
     });
-    let card = null;
-
-    const buildCard = (business) => {
-        return (
-            <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={business.id}>
-                <Card className={classes.card} variant='outlined'>
-                    <CardActionArea>
-                        <CardContent>
-                            <Typography className={classes.titleHead} gutterBottom variant='h6' component='h3'>
-                                {business.username}
-                            </Typography>
-                            <Typography variant='body2' color='textSecondary' component='p'>
-                                rating: {business.rating}
-                                <br />
-                                {business.text}
-                                <br />
-                                created at: {business.time_created}
-                            </Typography>
-                        </CardContent>
-                    </CardActionArea>
-                </Card>
-            </Grid>
-        )
-    }
 
     if (loading) {
         return <div>Loading...</div>
@@ -73,23 +48,48 @@ const Business = (props) => {
         return <div>{error.message}</div>
     }
 
-    const { businessReviews } = data;
-    console.log(data)
-    card = businessReviews.map((business) => {
-        return buildCard(business);
-    });
+    const { singleBusiness } = data;
 
     return (
-        <div>
-            { props.match.params.id}
-            <Grid container className={classes.grid} spacing={5}>
-                {card}
-            </Grid>
-        </div>
+        <Card className={classes.card} variant='outlined'>
+            <CardHeader className={classes.titleHead} title={singleBusiness.name} />
+            <CardMedia
+                className={classes.media}
+                component='img'
+                image={singleBusiness.image_url}
+                title='business image'
+            />
+
+            <CardContent>
+                <Typography variant='body2' color='textSecondary' component='span'>
+                    <dl>
+                        <p>
+                            <dt className="title">rating:</dt>
+                            {singleBusiness.rating ? <dd>{singleBusiness.rating}</dd> : <dd>N/A</dd>}
+                        </p>
+                        <p>
+                            <dt className="title">price:</dt>
+                            {singleBusiness.price ? <dd>{singleBusiness.price}</dd> : <dd>N/A</dd>}
+                        </p>
+                        <p>
+                            <dt className="title">display_phone:</dt>
+                            {singleBusiness.display_phone ? <dd>{singleBusiness.display_phone}</dd> : <dd>N/A</dd>}
+                        </p>
+                        <p>
+                            <dt className="title">location:</dt>
+                            {singleBusiness.location ? <dd>{singleBusiness.location}</dd> : <dd>N/A</dd>}
+                        </p>
+                        <p>
+                            <dt className="title">reveiws:</dt>
+                            <dd>
+                                <Reviews alias={singleBusiness.alias} />
+                            </dd>
+                        </p>
+                    </dl>
+                </Typography>
+            </CardContent>
+        </Card>
     )
-
-
-
 };
 
 export default Business;

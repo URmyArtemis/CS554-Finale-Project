@@ -15,6 +15,21 @@ const GET_YELPBUSINESSES = gql`
     }
 `;
 
+const GET_SINGLEBUSINESS = gql`
+    query ($id: ID!) {
+        singleBusiness(id: $id) {
+            id
+            alias
+            name
+            image_url
+            rating
+            location
+            display_phone
+            price
+        }
+    }
+`;
+
 const GET_BUSINESSREVIEWS = gql`
     query ($alias: String!) {
         businessReviews(alias: $alias) {
@@ -107,6 +122,7 @@ const UPDATE_BUSINESS = gql`
 
 export default {
     GET_YELPBUSINESSES,
+    GET_SINGLEBUSINESS,
     GET_BUSINESSREVIEWS,
     GET_BINNEDBUSINESSES,
     GET_POSTEDREVIEWS,
