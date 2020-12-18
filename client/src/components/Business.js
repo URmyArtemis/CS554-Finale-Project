@@ -41,33 +41,6 @@ const Business = (props) => {
             id: props.match.params.id
         }
     });
-<<<<<<< HEAD
-=======
-    let card = null;
-
-    const buildCard = (business) => {
-        return (
-            <Grid item xs={12} sm={12} md={12} lg={12} xl={12} key={business.id}>
-                <Card className={classes.card} variant='outlined'>
-                    <CardActionArea>
-                        <CardContent>
-                            <Typography className={classes.titleHead} gutterBottom variant='h6' component='h3'>
-                                {business.username}
-                            </Typography>
-                            <Typography variant='body2' color='textSecondary' component='p'>
-                                rating: {business.rating}
-                                <br />
-                                {business.text}
-                                <br />
-                                created at: {business.time_created}
-                            </Typography>
-                        </CardContent>
-                    </CardActionArea>
-                </Card>
-            </Grid>
-        )
-    }
->>>>>>> 56e6efe765092acfcd611d82def37c11ee78b173
 
     if (loading) {
         return <div>Loading...</div>
