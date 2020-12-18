@@ -46,7 +46,7 @@ const Business = (props) => {
 
     const buildCard = (business) => {
         return (
-            <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={business.id}>
+            <Grid item xs={12} sm={12} md={12} lg={12} xl={12} key={business.id}>
                 <Card className={classes.card} variant='outlined'>
                     <CardActionArea>
                         <CardContent>
