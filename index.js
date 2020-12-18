@@ -54,7 +54,7 @@ const resolvers = {
             try {
                 const response = await yelpClient.search({ term: args.term, location: args.location });
                 const { businesses } = response.jsonBody;
-                return businesses.map(async (data) => {
+                return await businesses.map(async (data) => {
                     if (await redisClient.existsAsync(data.id)) {
                         const stringBusiness = await redisClient.getAsync(data.id);
                         return JSON.parse(stringBusiness);
@@ -69,9 +69,15 @@ const resolvers = {
                             display_phone: data.display_phone,
                             price: data.price
                         }
+<<<<<<< HEAD
                         gm(request(data.image_url)).options({
                             imageMagick: true
                         }).resize(1300, 1050).stream().pipe(fs.createWriteStream(`./client/public/imgs/${data.alias}.jpg`));
+=======
+                        await gm(request(data.image_url)).options({
+                            imageMagick: true
+                        }).resize(1300, 1050).stream().pipe(await fs.createWriteStream(`./client/src/img/${data.alias}.jpg`));
+>>>>>>> b6faa5a1d304e848e191c7f1d50e41729a296e23
                         await redisClient.setAsync(data.id, JSON.stringify(business));
                         return business;
                     }
