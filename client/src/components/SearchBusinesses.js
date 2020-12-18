@@ -1,21 +1,21 @@
 import React from 'react';
 
 const SearchBusinesses = (props) => {
+    let term;
+    let location;
+
     return (
         <form className="form" onSubmit={(e) => {
             e.preventDefault();
+            props.searchTerm(term.value);
+            props.searchLocation(location.value);
         }}
         >
             <div className="form-group">
                 <label>
                     term:
                     <br />
-                    <input
-                        ref={(node) => {
-                            props.searchTerm(node)
-                        }}
-                        autoFocus
-                    />
+                    <input ref={(node) => term = node} autoFocus />
                 </label>
             </div>
             <div className="form-group">
@@ -23,11 +23,7 @@ const SearchBusinesses = (props) => {
                     location:
                     <br />
                     <input
-                        ref={(node) => {
-                            props.searchLocation(node)
-                        }}
-                        required
-                    />
+                        ref={(node) => location = node} required />
                 </label>
             </div>
             <br />

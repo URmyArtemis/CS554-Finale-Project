@@ -64,8 +64,8 @@ const BusinessList = (props) => {
                             <CardMedia
                                 className={classes.media}
                                 component='img'
-                                image='../img/${business.alias}.jpg'
-                                // image={business.image_url}
+                                // image='../img/${business.alias}.jpg'
+                                image={business.image_url}
                                 title='business image'
                             />
 
@@ -75,9 +75,10 @@ const BusinessList = (props) => {
                                 </Typography>
                                 <Typography variant='body2' color='textSecondary' component='p'>
                                     rating: {business.rating}
-                                </Typography>
-                                <Typography variant='body2' color='textSecondary' component='p'>
+                                    <br />
                                     price: {business.price}
+                                    <br />
+                                    {business.location[0]}, {business.location[1]}
                                 </Typography>
                             </CardContent>
                         </Link>
@@ -100,7 +101,7 @@ const BusinessList = (props) => {
 
     return (
         <div>
-            {/* <SearchBusinesses searchTerm={searchTerm} searchLocation={searchLocation} /> */}
+            <SearchBusinesses searchTerm={searchTerm} searchLocation={searchLocation} />
             <br />
             <br />
             <Grid container className={classes.grid} spacing={5}>
