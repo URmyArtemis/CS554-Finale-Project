@@ -18,7 +18,7 @@ import MyPost from './MyPost';
 
 const client = new ApolloClient({
   cache: new InMemoryCache(),
-  link: new HttpLink({ uri: 'http://18.218.48.72:4000' })
+  link: new HttpLink({ uri: 'http://localhost:4000' })
 });
 
 function App() {
