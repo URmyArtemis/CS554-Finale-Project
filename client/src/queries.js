@@ -70,8 +70,8 @@ const GET_POSTEDREVIEWS = gql`
 `;
 
 const UPLOAD_REVIEW = gql`
-    mutation ($businessAlias: String!, $text: String!, $rating: Int!, $username: String!) {
-        uploadReview(businessAlias: $businessAlias, text: $text, rating: $rating, username: $username) {
+    mutation ($uid: ID!, $businessAlias: String!, $text: String!, $rating: Int!, $username: String!) {
+        uploadReview(uid: $uid, businessAlias: $businessAlias, text: $text, rating: $rating, username: $username) {
             id
             text
             rating
@@ -82,8 +82,8 @@ const UPLOAD_REVIEW = gql`
 `;
 
 const UPDATE_REVIEW = gql`
-    mutation ($businessAlias: String!, $id: ID!, $text: String, $rating: Int) {
-        updateReview(businessAlias: $businessAlias, id: $id, text: $text, rating: $rating) {
+    mutation ($uid: ID!, $businessAlias: String!, $id: ID!, $text: String, $rating: Int) {
+        updateReview(uid: $uid, businessAlias: $businessAlias, id: $id, text: $text, rating: $rating) {
             id
             text
             rating
@@ -94,8 +94,8 @@ const UPDATE_REVIEW = gql`
 `;
 
 const DELETE_REVIEW = gql`
-    mutation ($businessAlias: String!, $id: ID!) {
-        deleteReview(businessAlias: $businessAlias, id: $id) {
+    mutation ($uid: ID!, $businessAlias: String!, $id: ID!) {
+        deleteReview(uid: $uid, businessAlias: $businessAlias, id: $id) {
             id
             text
             rating
@@ -106,8 +106,8 @@ const DELETE_REVIEW = gql`
 `;
 
 const UPDATE_BUSINESS = gql`
-    mutation ($id: ID!, $binned: Boolean!) {
-        updateBusiness(id: $id, binned: $binned) {
+    mutation ($uid: ID!, $id: ID!, $binned: Boolean!) {
+        updateBusiness(uid: $uid, id: $id, binned: $binned) {
             id
             alias
             name

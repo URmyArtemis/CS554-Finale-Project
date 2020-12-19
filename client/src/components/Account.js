@@ -15,8 +15,9 @@ function Account() {
       <Link to="/changepassword">
         Change Password
       </Link>
+      <br />
+      <Link to="/account/mybin">My Bin</Link>
       {/* <SignOutButton /> */}
-      <h2>Favorites </h2>
       <h2>My reviews </h2>
     </div>
   );

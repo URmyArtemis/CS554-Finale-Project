@@ -42,10 +42,10 @@ const typeDefs = gql`
     }
 
     type Mutation {
-        uploadReview(businessAlias: String!, text: String!, rating: Int!, username: String!): Review
-        updateReview(businessAlias: String!, id: ID!, text: String, rating: Int): Review
-        deleteReview(businessAlias: String!, id: ID!): Review
-        updateBusiness(id: ID!, binned: Boolean!): Business
+        uploadReview(uid: ID!, businessAlias: String!, text: String!, rating: Int!, username: String!): Review
+        updateReview(uid: ID!, businessAlias: String!, id: ID!, text: String, rating: Int): Review
+        deleteReview(uid: ID!, businessAlias: String!, id: ID!): Review
+        updateBusiness(uid: ID!, id: ID!, binned: Boolean!): Business
     }
 `;
 
@@ -184,7 +184,8 @@ const resolvers = {
             } else {
                 await redisClient.sremAsync(`${args.uid}binned`, args.id);
             }
-            return await redisClient.getAsync(args.id);
+            const stringBusiness = await redisClient.getAsync(args.id);
+            return JSON.parse(stringBusiness);
         }
     }
 };

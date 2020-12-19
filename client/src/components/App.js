@@ -13,6 +13,7 @@ import SignIn from './SignIn';
 import SignUp from './SignUp';
 import BusinessList from './BusinessList';
 import Business from './Business';
+import MyBin from './MyBin';
 
 const client = new ApolloClient({
   cache: new InMemoryCache(),
@@ -30,14 +31,14 @@ function App() {
             </header>
           </div>
           <Route exact path="/" component={Landing} />
-          <PrivateRoute path="/home" component={Home} />
+          <Route exact path="/signin" component={SignIn} />
+          <Route exact path="/signup" component={SignUp} />
+          <PrivateRoute exact path="/home" component={Home} />
+          <PrivateRoute exact path="/account" component={Account} />
+          <PrivateRoute exact path="/changepassword" component={ChangePassword} />
           <PrivateRoute exact path="/businesses" component={BusinessList} />
-          <PrivateRoute path="/account" component={Account} />
-          <PrivateRoute path="/changepassword" component={ChangePassword} />
-          <Route path="/signin" component={SignIn} />
-          <Route path="/signup" component={SignUp} />
-          {/* <PrivateRoute exact path="/businesses" component={BusinessList} /> */}
           <PrivateRoute exact path="/businesses/:id" component={Business} />
+          <PrivateRoute exact path="/account/mybin" component={MyBin} />
         </Router>
       </AuthProvider>
     </ApolloProvider>
