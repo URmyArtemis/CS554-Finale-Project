@@ -23,10 +23,10 @@ const Reviews = (props) => {
             {businessReviews.map((review) => {
                 return (
                     <li key={review.id}>
-                        <p>text: {review.text}</p>
+                        <p>{review.text}</p>
                         <p>rating: {review.rating}</p>
-                        <p>postedby: {review.username}</p>
-                        <p>time_created: {review.time_created}</p>
+                        <p>posted by: {review.username}</p>
+                        <p>time created: {review.time_created}</p>
                         <br />
                     </li>
                 )

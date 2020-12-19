@@ -18,16 +18,19 @@ const NavigationAuth = () => {
             Landing
           </NavLink>
         </li>
+        <br />
         <li>
           <NavLink exact to="/businesses" activeClassName="active">
             Businesses
           </NavLink>
         </li>
+        <br />
         <li>
           <NavLink exact to="/account" activeClassName="active">
             Account
           </NavLink>
         </li>
+        <br />
         <li>
           <SignOutButton />
         </li>
@@ -45,16 +48,19 @@ const NavigationNonAuth = () => {
             Landing
           </NavLink>
         </li>
+        <br />
         <li>
           <NavLink exact to="/signup" activeClassName="active">
             Sign-up
           </NavLink>
         </li>
+        <br />
 
         <li>
           <NavLink exact to="/signin" activeClassName="active">
             Sign-In
           </NavLink>
+          <br />
         </li>
       </ul>
     </nav>
