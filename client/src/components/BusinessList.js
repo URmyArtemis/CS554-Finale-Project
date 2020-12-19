@@ -84,7 +84,7 @@ const BusinessList = (props) => {
                                 <Typography variant='body2' color='textSecondary' component='p'>
                                     rating: {business.rating ? business.rating : 'N/A'}
                                     <br />
-                                    price: {business.pric ? business.price : 'N/A'}
+                                    price: {business.price ? business.price : 'N/A'}
                                     <br />
                                     {business.location[0]}, {business.location[1]}
                                 </Typography>

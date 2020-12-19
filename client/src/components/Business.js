@@ -189,7 +189,7 @@ const Business = (props) => {
                                 <label>
                                     text:
                                 <br />
-                                    <input ref={(node) => text = node} required autoFocus />
+                                    <textarea ref={(node) => text = node} required autoFocus />
                                 </label>
                             </div>
                             <div className="form-group">
