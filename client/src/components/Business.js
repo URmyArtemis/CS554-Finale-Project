@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 import { AuthContext } from '../firebase/Auth';
+import { Link } from 'react-router-dom';
 import queries from '../queries';
 import Reviews from './Reviews';
 import { makeStyles, Card, CardContent, CardMedia, Typography, CardHeader, Button } from '@material-ui/core';
@@ -63,7 +64,6 @@ const Business = (props) => {
                         uid: currentUser.uid
                     },
                     data: { binnedBusinesses: binnedBusinesses.concat([updateBusiness]) }
-
                 });
             } else {
                 cache.writeQuery({
@@ -108,6 +108,15 @@ const Business = (props) => {
     const { binnedBusinesses } = binnedResponse.data;
     const { singleBusiness } = businessResponse.data;
 
+    if (!singleBusiness) {
+        return (
+            <div>
+                <h1>404 not found!</h1>
+                <p>The source is not found, go to other pages!</p>
+            </div>
+        )
+    }
+
     binnedBusinesses.map((business) => {
         if (business.id === singleBusiness.id) {
             ifBinned = true;
@@ -117,92 +126,101 @@ const Business = (props) => {
 
 
     return (
-        <Card className={classes.card} variant='outlined'>
-            <CardHeader className={classes.titleHead} title={singleBusiness.name} />
-            <Button variant='contained' color='primary' onClick={(e) => {
-                updateBusiness({
-                    variables: {
-                        uid: currentUser.uid,
-                        id: singleBusiness.id,
-                        binned: !ifBinned
-                    }
-                });
-                ifBinned = !ifBinned;
-            }}>{ifBinned ? 'Remove from bin' : 'Add to bin'}</Button>
-            <CardMedia
-                className={classes.media}
-                component='img'
-                image={singleBusiness.image_url}
-                title='business image'
-            />
+        <div>
+            <Link to={{
+                pathname: '/businesses',
+                state: {
+                    term: props.location.state.term,
+                    location: props.location.state.location
+                }
+            }}>Back to the search results </Link>
+            <Card className={classes.card} variant='outlined'>
+                <CardHeader className={classes.titleHead} title={singleBusiness.name} />
+                <Button variant='contained' color='primary' onClick={(e) => {
+                    updateBusiness({
+                        variables: {
+                            uid: currentUser.uid,
+                            id: singleBusiness.id,
+                            binned: !ifBinned
+                        }
+                    });
+                    ifBinned = !ifBinned;
+                }}>{ifBinned ? 'Remove from bin' : 'Add to bin'}</Button>
+                <CardMedia
+                    className={classes.media}
+                    component='img'
+                    image={singleBusiness.image_url}
+                    title='business image'
+                />
 
-            <CardContent>
-                <Typography variant='body2' color='textSecondary' component='span'>
-                    <dl>
-                        <p>
-                            <dt className="title">rating:</dt>
-                            {singleBusiness.rating ? <dd>{singleBusiness.rating}</dd> : <dd>N/A</dd>}
-                        </p>
-                        <p>
-                            <dt className="title">price:</dt>
-                            {singleBusiness.price ? <dd>{singleBusiness.price}</dd> : <dd>N/A</dd>}
-                        </p>
-                        <p>
-                            <dt className="title">display_phone:</dt>
-                            {singleBusiness.display_phone ? <dd>{singleBusiness.display_phone}</dd> : <dd>N/A</dd>}
-                        </p>
-                        <p>
-                            <dt className="title">location:</dt>
-                            {singleBusiness.location ? <dd>{singleBusiness.location}</dd> : <dd>N/A</dd>}
-                        </p>
-                        <div>
-                            <dt className="title">reveiws:</dt>
-                            <dd>
-                                <Reviews alias={singleBusiness.alias} />
-                            </dd>
-                        </div>
-                    </dl>
-                    <br />
-                    <br />
-                    <form className="form" onSubmit={(e) => {
-                        e.preventDefault();
-                        uploadReview({
-                            variables: {
-                                uid: currentUser.uid,
-                                businessAlias: singleBusiness.alias,
-                                businessName: singleBusiness.name,
-                                text: text.value,
-                                rating: parseInt(rating.value),
-                                username: currentUser.displayName
-                            }
-                        });
-                    }}>
-                        <div className="form-group">
-                            <label>
-                                text:
+                <CardContent>
+                    <Typography variant='body2' color='textSecondary' component='span'>
+                        <dl>
+                            <p>
+                                <dt className="title">rating:</dt>
+                                {singleBusiness.rating ? <dd>{singleBusiness.rating}</dd> : <dd>N/A</dd>}
+                            </p>
+                            <p>
+                                <dt className="title">price:</dt>
+                                {singleBusiness.price ? <dd>{singleBusiness.price}</dd> : <dd>N/A</dd>}
+                            </p>
+                            <p>
+                                <dt className="title">display_phone:</dt>
+                                {singleBusiness.display_phone ? <dd>{singleBusiness.display_phone}</dd> : <dd>N/A</dd>}
+                            </p>
+                            <p>
+                                <dt className="title">location:</dt>
+                                {singleBusiness.location ? <dd>{singleBusiness.location}</dd> : <dd>N/A</dd>}
+                            </p>
+                            <div>
+                                <dt className="title">reveiws:</dt>
+                                <dd>
+                                    <Reviews alias={singleBusiness.alias} />
+                                </dd>
+                            </div>
+                        </dl>
+                        <br />
+                        <br />
+                        <form className="form" onSubmit={(e) => {
+                            e.preventDefault();
+                            uploadReview({
+                                variables: {
+                                    uid: currentUser.uid,
+                                    businessAlias: singleBusiness.alias,
+                                    businessName: singleBusiness.name,
+                                    text: text.value,
+                                    rating: parseInt(rating.value),
+                                    username: currentUser.displayName ? currentUser.displayName : currentUser.email
+                                }
+                            });
+                        }}>
+                            <div className="form-group">
+                                <label>
+                                    text:
                                 <br />
-                                <textarea ref={(node) => text = node} required autoFocus />
-                            </label>
-                        </div>
-                        <div className="form-group">
-                            <label>
-                                rating:
+                                    <textarea ref={(node) => text = node} required autoFocus />
+                                </label>
+                            </div>
+                            <div className="form-group">
+                                <label>
+                                    rating:
                                 <select ref={(node) => rating = node}>
-                                    <option key={5} value={5}>5</option>
-                                    <option key={4} value={4}>4</option>
-                                    <option key={3} value={3}>3</option>
-                                    <option key={2} value={2}>2</option>
-                                    <option key={1} value={1}>1</option>
-                                </select>
-                            </label>
-                        </div>
-                        <button type="submit">
-                            Add Review
+                                        <option key={5} value={5}>5</option>
+                                        <option key={4} value={4}>4</option>
+                                        <option key={3} value={3}>3</option>
+                                        <option key={2} value={2}>2</option>
+                                        <option key={1} value={1}>1</option>
+                                    </select>
+                                </label>
+                            </div>
+                            <button type="submit">
+                                Add Review
                         </button>
-                    </form>
-                </Typography>
-            </CardContent>
-        </Card>
+                        </form>
+                    </Typography>
+                </CardContent>
+            </Card>
+        </div>
     )
 };
 
