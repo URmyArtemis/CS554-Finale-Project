@@ -108,6 +108,15 @@ const Business = (props) => {
     const { binnedBusinesses } = binnedResponse.data;
     const { singleBusiness } = businessResponse.data;
 
+    if (!singleBusiness) {
+        return (
+            <div>
+                <h1>404 not found!</h1>
+                <p>The source is not found, go to other pages!</p>
+            </div>
+        )
+    }
+
     binnedBusinesses.map((business) => {
         if (business.id === singleBusiness.id) {
             ifBinned = true;
@@ -181,7 +190,7 @@ const Business = (props) => {
                                     businessName: singleBusiness.name,
                                     text: text.value,
                                     rating: parseInt(rating.value),
-                                    username: currentUser.displayName
+                                    username: currentUser.displayName ? currentUser.displayName : currentUser.email
                                 }
                             });
                         }}>
