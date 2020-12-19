@@ -16,7 +16,7 @@ import Business from './Business';
 
 const client = new ApolloClient({
   cache: new InMemoryCache(),
-  link: new HttpLink({ uri: 'http://localhost:4000' })
+  link: new HttpLink({ uri: 'http://ec2-18-218-48-72.us-east-2.compute.amazonaws.com:4000' })
 });
 
 function App() {
