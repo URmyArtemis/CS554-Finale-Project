@@ -37,8 +37,11 @@ const useStyles = makeStyles({
 
 const BusinessList = (props) => {
     const classes = useStyles();
-    const [term, setTerm] = useState(undefined);
-    const [location, setLocation] = useState('Hoboken');
+    const [term, setTerm] = useState(
+        props.location.state ? props.location.state.term : undefined);
+    const [location, setLocation] = useState(
+        props.location.state ? props.location.state.location : 'Hoboken'
+    );
     const { data, loading, error } = useQuery(queries.GET_YELPBUSINESSES, {
         variables: {
             term: term,
@@ -60,7 +63,13 @@ const BusinessList = (props) => {
             <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={business.id}>
                 <Card className={classes.card} variant='outlined'>
                     <CardActionArea>
-                        <Link to={`/businesses/${business.id}`}>
+                        <Link to={{
+                            pathname: `/businesses/${business.id}`,
+                            state: {
+                                term: term,
+                                location: location
+                            }
+                        }}>
                             <CardMedia
                                 className={classes.media}
                                 component='img'
