@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
-import { useQuery } from '@apollo/client';
+import React, { useContext } from 'react';
+import { useQuery, useMutation } from '@apollo/client';
+import { AuthContext } from '../firebase/Auth';
 import queries from '../queries';
 import Reviews from './Reviews';
-import { makeStyles, Card, CardContent, CardMedia, Typography, CardHeader } from '@material-ui/core';
+import { makeStyles, Card, CardContent, CardMedia, Typography, CardHeader, Button } from '@material-ui/core';
 import '../App.css';
 
 const useStyles = makeStyles({
@@ -36,23 +37,80 @@ const useStyles = makeStyles({
 
 const Business = (props) => {
     const classes = useStyles();
-    const { data, loading, error } = useQuery(queries.GET_SINGLEBUSINESS, {
+    const { currentUser } = useContext(AuthContext);
+    const binnedResponse = useQuery(queries.GET_BINNEDBUSINESSES, {
+        variables: {
+            uid: currentUser.uid
+        }
+    });
+    const businessResponse = useQuery(queries.GET_SINGLEBUSINESS, {
         variables: {
             id: props.match.params.id
         }
     });
+    const [updateBusiness] = useMutation(queries.UPDATE_BUSINESS, {
+        update(cache, { data: { updateBusiness } }) {
+            const { binnedBusinesses } = cache.readQuery({
+                query: queries.GET_BINNEDBUSINESSES,
+                variables: {
+                    uid: currentUser.uid
+                }
+            });
+            if (ifBinned) {
+                cache.writeQuery({
+                    query: queries.GET_BINNEDBUSINESSES,
+                    variables: {
+                        uid: currentUser.uid
+                    },
+                    data: { binnedBusinesses: binnedBusinesses.concat([updateBusiness]) }
 
-    if (loading) {
+                });
+            } else {
+                cache.writeQuery({
+                    query: queries.GET_BINNEDBUSINESSES,
+                    variables: {
+                        uid: currentUser.uid
+                    },
+                    data: { binnedBusinesses: binnedBusinesses.filter((e) => e.id !== updateBusiness.id) }
+                });
+            }
+        }
+    });
+    let ifBinned = false;
+
+
+    if (binnedResponse.loading || businessResponse.loading) {
         return <div>Loading...</div>
-    } else if (error) {
-        return <div>{error.message}</div>
+    } else if (binnedResponse.error) {
+        return <div>{binnedResponse.error.message}</div>
+    } else if (businessResponse.error) {
+        return <div>{businessResponse.error.message}</div>
     }
 
-    const { singleBusiness } = data;
+    const { binnedBusinesses } = binnedResponse.data;
+    const { singleBusiness } = businessResponse.data;
+
+    binnedBusinesses.map((business) => {
+        if (business.id === singleBusiness.id) {
+            ifBinned = true;
+        }
+        return business;
+    });
+
 
     return (
         <Card className={classes.card} variant='outlined'>
             <CardHeader className={classes.titleHead} title={singleBusiness.name} />
+            <Button variant='contained' color='primary' onClick={(e) => {
+                updateBusiness({
+                    variables: {
+                        uid: currentUser.uid,
+                        id: singleBusiness.id,
+                        binned: !ifBinned
+                    }
+                });
+                ifBinned = !ifBinned;
+            }}>{ifBinned ? 'Remove from bin' : 'Add to bin'}</Button>
             <CardMedia
                 className={classes.media}
                 component='img'
@@ -79,12 +137,12 @@ const Business = (props) => {
                             <dt className="title">location:</dt>
                             {singleBusiness.location ? <dd>{singleBusiness.location}</dd> : <dd>N/A</dd>}
                         </p>
-                        <p>
+                        <div>
                             <dt className="title">reveiws:</dt>
                             <dd>
                                 <Reviews alias={singleBusiness.alias} />
                             </dd>
-                        </p>
+                        </div>
                     </dl>
                 </Typography>
             </CardContent>
