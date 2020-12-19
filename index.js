@@ -35,14 +35,16 @@ const typeDefs = gql`
 
     type Review {
         id: ID!
+        businessName: String
+        businessAlias: String
         text: String
         rating: Int
         time_created: String!
-        username: String!
+        username: String
     }
 
     type Mutation {
-        uploadReview(uid: ID!, businessAlias: String!, text: String!, rating: Int!, username: String!): Review
+        uploadReview(uid: ID!, businessAlias: String!, businessName: String!, text: String!, rating: Int!, username: String): Review
         updateReview(uid: ID!, businessAlias: String!, id: ID!, text: String, rating: Int): Review
         deleteReview(uid: ID!, businessAlias: String!, id: ID!): Review
         updateBusiness(uid: ID!, id: ID!, binned: Boolean!): Business
@@ -131,6 +133,8 @@ const resolvers = {
             const myDate = new Date();
             const newReview = {
                 id: uuid.v4(),
+                businessName: args.businessName,
+                businessAlias: args.businessAlias,
                 text: args.text,
                 rating: args.rating,
                 time_created: myDate.toLocaleString(),

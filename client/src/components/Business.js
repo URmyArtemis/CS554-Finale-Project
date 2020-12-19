@@ -76,8 +76,26 @@ const Business = (props) => {
             }
         }
     });
+    const [uploadReview] = useMutation(queries.UPLOAD_REVIEW, {
+        update(cache, { data: { uploadReview } }) {
+            const { businessReviews } = cache.readQuery({
+                query: queries.GET_BUSINESSREVIEWS,
+                variables: {
+                    alias: uploadReview.businessAlias
+                }
+            });
+            cache.writeQuery({
+                query: queries.GET_BUSINESSREVIEWS,
+                variables: {
+                    alias: uploadReview.businessAlias
+                },
+                data: { businessReviews: businessReviews.concat([uploadReview]) }
+            });
+        }
+    });
     let ifBinned = false;
-
+    let text;
+    let rating;
 
     if (binnedResponse.loading || businessResponse.loading) {
         return <div>Loading...</div>
@@ -144,6 +162,44 @@ const Business = (props) => {
                             </dd>
                         </div>
                     </dl>
+                    <br />
+                    <br />
+                    <form className="form" onSubmit={(e) => {
+                        e.preventDefault();
+                        uploadReview({
+                            variables: {
+                                uid: currentUser.uid,
+                                businessAlias: singleBusiness.alias,
+                                businessName: singleBusiness.name,
+                                text: text.value,
+                                rating: parseInt(rating.value),
+                                username: currentUser.displayName
+                            }
+                        });
+                    }}>
+                        <div className="form-group">
+                            <label>
+                                text:
+                                <br />
+                                <input ref={(node) => text = node} required autoFocus />
+                            </label>
+                        </div>
+                        <div className="form-group">
+                            <label>
+                                rating:
+                                <select ref={(node) => rating = node}>
+                                    <option key={5} value={5}>5</option>
+                                    <option key={4} value={4}>4</option>
+                                    <option key={3} value={3}>3</option>
+                                    <option key={2} value={2}>2</option>
+                                    <option key={1} value={1}>1</option>
+                                </select>
+                            </label>
+                        </div>
+                        <button type="submit">
+                            Add Review
+                        </button>
+                    </form>
                 </Typography>
             </CardContent>
         </Card>

@@ -14,6 +14,7 @@ import SignUp from './SignUp';
 import BusinessList from './BusinessList';
 import Business from './Business';
 import MyBin from './MyBin';
+import MyPost from './MyPost';
 
 const client = new ApolloClient({
   cache: new InMemoryCache(),
@@ -39,6 +40,7 @@ function App() {
           <PrivateRoute exact path="/businesses" component={BusinessList} />
           <PrivateRoute exact path="/businesses/:id" component={Business} />
           <PrivateRoute exact path="/account/mybin" component={MyBin} />
+          <PrivateRoute exact path="/account/mypost" component={MyPost} />
         </Router>
       </AuthProvider>
     </ApolloProvider>

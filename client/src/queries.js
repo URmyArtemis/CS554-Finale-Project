@@ -61,6 +61,8 @@ const GET_POSTEDREVIEWS = gql`
     query ($uid: ID!) {
         postedReviews(uid: $uid) {
             id
+            businessName
+            businessAlias
             text
             rating
             time_created
@@ -70,9 +72,10 @@ const GET_POSTEDREVIEWS = gql`
 `;
 
 const UPLOAD_REVIEW = gql`
-    mutation ($uid: ID!, $businessAlias: String!, $text: String!, $rating: Int!, $username: String!) {
-        uploadReview(uid: $uid, businessAlias: $businessAlias, text: $text, rating: $rating, username: $username) {
+    mutation ($uid: ID!, $businessAlias: String!, $businessName: String!, $text: String!, $rating: Int!, $username: String) {
+        uploadReview(uid: $uid, businessAlias: $businessAlias, businessName: $businessName, text: $text, rating: $rating, username: $username) {
             id
+            businessAlias
             text
             rating
             time_created
@@ -97,6 +100,8 @@ const DELETE_REVIEW = gql`
     mutation ($uid: ID!, $businessAlias: String!, $id: ID!) {
         deleteReview(uid: $uid, businessAlias: $businessAlias, id: $id) {
             id
+            businessName
+            businessAlias
             text
             rating
             time_created

@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 import { AuthContext } from '../firebase/Auth';
 import queries from '../queries';
-import { Card, CardContent, CardMedia, Grid, Typography, makeStyles, Button } from '@material-ui/core';
+import { Card, CardContent, Grid, Typography, makeStyles, Button } from '@material-ui/core';
 import '../App.css';
 
 const useStyles = makeStyles({
@@ -34,64 +34,57 @@ const useStyles = makeStyles({
     }
 });
 
-const MyBin = (props) => {
+const MyPost = (props) => {
     const classes = useStyles();
     const { currentUser } = useContext(AuthContext);
-    const { data, loading, error } = useQuery(queries.GET_BINNEDBUSINESSES, {
+    const { data, loading, error } = useQuery(queries.GET_POSTEDREVIEWS, {
         variables: {
             uid: currentUser.uid
         }
     });
-    const [updateBusiness] = useMutation(queries.UPDATE_BUSINESS, {
-        update(cache, { data: { updateBusiness } }) {
-            const { binnedBusinesses } = cache.readQuery({
-                query: queries.GET_BINNEDBUSINESSES,
+    const [deleteReview] = useMutation(queries.DELETE_REVIEW, {
+        update(cache, { data: { deleteReview } }) {
+            const { postedReviews } = cache.readQuery({
+                query: queries.GET_POSTEDREVIEWS,
                 variables: {
                     uid: currentUser.uid
                 }
             });
             cache.writeQuery({
-                query: queries.GET_BINNEDBUSINESSES,
+                query: queries.GET_POSTEDREVIEWS,
                 variables: {
                     uid: currentUser.uid
                 },
-                data: { binnedBusinesses: binnedBusinesses.filter((e) => e.id !== updateBusiness.id) }
+                data: { postedReviews: postedReviews.filter((e) => e.id !== deleteReview.id) }
             });
         }
     });
     let card = null;
 
-    const buildCard = (business) => {
+    const buildCard = (review) => {
         return (
-            <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={business.id}>
+            <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={review.id}>
                 <Card className={classes.card} variant='outlined'>
-                    <CardMedia
-                        className={classes.media}
-                        component='img'
-                        image={business.image_url}
-                        title='business image'
-                    />
-
                     <CardContent>
                         <Typography className={classes.titleHead} gutterBottom variant='h6' component='h3'>
-                            {business.name}
+                            {review.businessName}
                         </Typography>
                         <Typography variant='body2' color='textSecondary' component='p'>
-                            rating: {business.rating ? business.rating : 'N/A'}
+                            rating: {review.rating}
                             <br />
-                            price: {business.pric ? business.price : 'N/A'}
+                            text: {review.text}
                             <br />
-                            {business.location[0]}, {business.location[1]}
+                            {review.time_created}
                         </Typography>
                         <Button variant='contained' color='primary' onClick={(e) => {
-                            updateBusiness({
+                            deleteReview({
                                 variables: {
                                     uid: currentUser.uid,
-                                    id: business.id,
-                                    binned: false
+                                    businessAlias: review.businessAlias,
+                                    id: review.id
                                 }
                             });
-                        }}>Remove From Bin</Button>
+                        }}>Delete This Review</Button>
                     </CardContent>
                 </Card>
             </Grid>
@@ -104,9 +97,9 @@ const MyBin = (props) => {
         return <div>{error.message}</div>
     }
 
-    const { binnedBusinesses } = data;
-    card = binnedBusinesses.map((business) => {
-        return buildCard(business);
+    const { postedReviews } = data;
+    card = postedReviews.map((review) => {
+        return buildCard(review);
     });
 
     return (
@@ -118,4 +111,4 @@ const MyBin = (props) => {
     )
 }
 
-export default MyBin;
+export default MyPost;

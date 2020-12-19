@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import SignOutButton from './SignOut';
+// import SignOutButton from './SignOut';
 import '../App.css';
 import { Link } from 'react-router-dom';
 // import ChangePassword from './ChangePassword';
@@ -11,14 +11,13 @@ function Account() {
     <div>
       <h2>Account Page</h2>
       <h2>{currentUser.email}</h2>
-      {/* <ChangePassword /> */}
-      <Link to="/changepassword">
-        Change Password
-      </Link>
+      <Link to="/changepassword">Change Password</Link>
+      <br />
       <br />
       <Link to="/account/mybin">My Bin</Link>
-      {/* <SignOutButton /> */}
-      <h2>My reviews </h2>
+      <br />
+      <br />
+      <Link to="/account/mypost">My Post</Link>
     </div>
   );
 }
